@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# MYDB
+/mydb
+derby.log

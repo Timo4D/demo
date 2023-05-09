@@ -40,4 +40,19 @@ public class VideoController {
         videoService.deleteVideo(title);
     }
 
+    @RequestMapping("/videosbygenre/{genre}")
+    public List<Video> getAllVideosOfGenre(@PathVariable String genre) {
+        return videoService.getAllVideosOfGenre(genre);
+    }
+
+    @RequestMapping("/videosbyage/{age}")
+    public List<Video> getAllVideosOfAge(@PathVariable String age) {
+        return videoService.gettAllVideosofAgeRating(age);
+    }
+
+    @RequestMapping("/videogenres")
+    public List<GenresOnly> getAllGenres() {
+        return videoService.getAllGenres();
+    }
+
 }
