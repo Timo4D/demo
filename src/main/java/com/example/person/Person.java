@@ -13,6 +13,12 @@ public class Person {
     private String surname;
     private String birthdate;
 
+    public Person(long id, String surname, String birthdate) {
+        this.id = id;
+        this.surname = surname;
+        this.birthdate = birthdate;
+    }
+
     public String getBirthdate() {
         return birthdate;
     }

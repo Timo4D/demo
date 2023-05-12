@@ -16,27 +16,27 @@ public class PersonController {
     PersonService personService;
 
     @RequestMapping("/persons")
-    public List<Person> getVideoList() {
+    public List<Person> getPersonList() {
         return personService.getPersonList();
     }
 
     @RequestMapping("/persons/{id}")
-    public Person getVideo(@PathVariable long id) {
+    public Person getPerson(@PathVariable long id) {
         return personService.getPerson(id);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/persons")
-    public void addVideo(@RequestBody Person Person) {
+    public void addPerson(@RequestBody Person Person) {
         personService.addPerson(Person);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/persons/{id}")
-    public void updateVideo(@PathVariable long id, @RequestBody Person Person) {
+    public void updatePerson(@PathVariable long id, @RequestBody Person Person) {
         personService.updatePerson(id, Person);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/persons/{id}")
-    public void deleteVideo(@PathVariable long id) {
+    public void deletePerson(@PathVariable long id) {
         personService.deletePerson(id);
     }
 
