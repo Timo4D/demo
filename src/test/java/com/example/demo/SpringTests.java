@@ -6,11 +6,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.MethodMode;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest
@@ -21,10 +24,11 @@ public class SpringTests {
 
     private String testVideo = "{\"title\":\"Test\",\"ageRating\":\"Alter\",\"description\":\"Beschreibung\",\"genre\":\"TestGenre\"}";
 
-    private String editedVideo = "{\"title\":\"Test\",\"ageRating\":\"Alter\",\"description\":\"Beschreibung\",\"genre\":\"TestGenre\"}";
+    private String updatedVideo = "{\"title\":\"Security\",\"ageRating\":\"Alter\",\"description\":\"Beschreibung\",\"genre\":\"TestGenre\"}";
 
     // Test der defaultRückgabe
     @Test
+    @DirtiesContext(methodMode = MethodMode.BEFORE_METHOD)
     void shouldReturnDefaultVideos() throws Exception {
         this.mockMvc.perform(get("/videos"))
                 .andDo(print())
@@ -49,35 +53,54 @@ public class SpringTests {
     @Test
     void shouldReturnAddedVideos() throws Exception {
 
-        //Add Video
+        // Add Video
         this.mockMvc.perform(post("/videos")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(testVideo))
-        .andDo(print())
-        .andExpect(status().isOk());
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(testVideo))
+                .andDo(print())
+                .andExpect(status().isOk());
 
-        //Request Video
+        // Request Video
         this.mockMvc.perform(get("/videos/Test"))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(content().string(testVideo));
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(testVideo));
 
     }
 
     // Test zur bearbeitung eines Videos
 
-    // @Test
-    // void shouldReturnUpdatedVideo() throws Exception {
+    @Test
+    @DirtiesContext(methodMode = MethodMode.BEFORE_METHOD)
+    void shouldReturnUpdatedVideo() throws Exception {
 
-    //     this.mockMvc.perform(put())
+        this.mockMvc.perform(put("/videos/Security")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(updatedVideo))
+                .andDo(print())
+                .andExpect(status().isOk());
 
-    //     this.mockMvc.perform(get("/videos/Test"))
-    //     .andDo(print())
-    //     .andExpect(status().isOk())
-    //     .andExpect(content().string(testVideo));
+        this.mockMvc.perform(get("/videos/Security"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(updatedVideo));
 
-    // }
+    }
 
     // Test zur Löschung eines Vieos
+
+    @Test
+    void shouldDeleteVideo() throws Exception {
+
+        this.mockMvc.perform(delete("/videos/Security"))
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        this.mockMvc.perform(get("/videos/Security"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(""));
+
+    }
 
 }
